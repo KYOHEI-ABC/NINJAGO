@@ -20,30 +20,30 @@ function newGroup(name, from, size) {
 
 
 const rightLeg = newGroup("RightLeg", [0.5, 0, -3], [5.5, 12, 6]);
-// rightLeg.origin[1] = rightLeg.children[0].to[1]
-rightLeg.origin[1] = rightLeg.children[0].to[1] - (rightLeg.children[0].to[0] - rightLeg.children[0].from[0]) / 2
+rightLeg.origin[1] = rightLeg.children[0].to[1]
+// rightLeg.origin[1] = rightLeg.children[0].to[1] - (rightLeg.children[0].to[0] - rightLeg.children[0].from[0]) / 2
 const leftLeg = newGroup("LeftLeg", [-6, 0, -3], [5.5, 12, 6]);
-// leftLeg.origin[1] = leftLeg.children[0].to[1]
-leftLeg.origin[1] = leftLeg.children[0].to[1] - (leftLeg.children[0].to[0] - leftLeg.children[0].from[0]) / 2
+leftLeg.origin[1] = leftLeg.children[0].to[1]
+// leftLeg.origin[1] = leftLeg.children[0].to[1] - (leftLeg.children[0].to[0] - leftLeg.children[0].from[0]) / 2
 
 const body = newGroup("Body", [-6, 12, -3], [12, 12, 6]);
 newCube("Hip", [-0.5, 6, -3], [1, 6, 6]).addTo(body);
-newCube("Joint", [-5.5, 12 - 4.5, -4.5 / 2], [11, 4.5, 4.5]).addTo(body);
-// newCube("Shoulder", [-7, 20, -1.5], [14, 3, 3]).addTo(body);
+// newCube("Joint", [-5.5, 12 - 4.5, -4.5 / 2], [11, 4.5, 4.5]).addTo(body);
+// newCube("Shoulder", [-7, 24 - 1 - 3.5, -3.5 / 2], [14, 3.5, 3.5]).addTo(body);
 
 const head = newGroup("Head", [-4, 25, -4], [8, 8, 8]);
 newCube("Neck", [-2, 24, -2], [4, 1, 4]).addTo(head);
 newCube("Stud", [-2, 33, -2], [4, 1, 4]).addTo(head);
 
-const rightArm = newGroup("RightArm", [6 - 1.5, 16 - 2, -1.5], [3, 8, 3]);
-rightArm.origin[1] = rightArm.children[0].to[1] - (rightArm.children[0].to[0] - rightArm.children[0].from[0]) / 2
-// rightArm.origin[1] = rightArm.children[0].to[1]
+const rightArm = newGroup("RightArm", [6 - 1.5, 14, -1.5], [3, 8, 3]);
+rightArm.origin[1] = rightArm.children[0].to[1]
+// rightArm.origin[1] = rightArm.children[0].to[1] - (rightArm.children[0].to[0] - rightArm.children[0].from[0]) / 2
 
 newGroup("RightHand", [rightArm.origin[0] - 2, rightArm.children[0].from[1] - 4, -2], [4, 4, 4]).addTo(rightArm);
 
-const leftArm = newGroup("LeftArm", [-9 + 1.5, 16 - 2, -1.5], [3, 8, 3]);
-leftArm.origin[1] = leftArm.children[0].to[1] - (leftArm.children[0].to[0] - leftArm.children[0].from[0]) / 2
-// leftArm.origin[1] = leftArm.children[0].to[1]
+const leftArm = newGroup("LeftArm", [-9 + 1.5, 14, -1.5], [3, 8, 3]);
+leftArm.origin[1] = leftArm.children[0].to[1]
+// leftArm.origin[1] = leftArm.children[0].to[1] - (leftArm.children[0].to[0] - leftArm.children[0].from[0]) / 2
 newGroup("LeftHand", [leftArm.origin[0] - 2, leftArm.children[0].from[1] - 4, -2], [4, 4, 4]).addTo(leftArm);
 
 // rightLeg.rotation[1] = -1.5
@@ -51,7 +51,6 @@ newGroup("LeftHand", [leftArm.origin[0] - 2, leftArm.children[0].from[1] - 4, -2
 
 // rightArm.rotation[2] = 15
 // leftArm.rotation[2] = -15
-
 
 function verifyGroup(index, name, origin, length) {
 	const g = Group.all[index];
