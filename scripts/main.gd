@@ -1,6 +1,10 @@
 class_name Main
 extends Node
 
+static var WINDOW: Vector2 = Vector2(ProjectSettings.get_setting("display/window/size/viewport_width"), ProjectSettings.get_setting("display/window/size/viewport_height"))
+
+var input_handler: InputHandler = InputHandler.new()
+
 func _ready() -> void:
 	var camera = Camera3D.new()
 	camera.position = Vector3(0.0, 32.0, 32.0)
@@ -27,3 +31,8 @@ func _ready() -> void:
 	mI.position.y = 0.5
 	mI.mesh = SphereMesh.new()
 	add_child(mI)
+
+	add_child(input_handler)
+	input_handler.drag.connect(func(vector2: Vector2) -> void:
+		print(vector2)
+	)
