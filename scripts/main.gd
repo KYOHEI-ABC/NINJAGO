@@ -3,6 +3,12 @@ extends Node
 
 static var WINDOW: Vector2 = Vector2(ProjectSettings.get_setting("display/window/size/viewport_width"), ProjectSettings.get_setting("display/window/size/viewport_height"))
 
+const MODELS: Array[PackedScene] = [
+	preload("res://assets/steve/steve.gltf"),
+]
+
+var characters: Array[Character] = []
+
 var input_handler: InputHandler = InputHandler.new()
 
 func _ready() -> void:
@@ -27,12 +33,17 @@ func _ready() -> void:
 	mesh_instance.material_override.uv1_scale = Vector3(64, 64, 1)
 	mesh_instance.material_override.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 
-	var mI = MeshInstance3D.new()
-	mI.position.y = 0.5
-	mI.mesh = SphereMesh.new()
-	add_child(mI)
 
 	add_child(input_handler)
-	input_handler.drag.connect(func(vector2: Vector2) -> void:
-		print(vector2)
+
+	characters.append(Character.new(0))
+	add_child(characters[0])
+
+	input_handler.drag.connect(func(drag: Vector2) -> void:
+		var move_dir = Vector3(drag.x, 0, drag.y)
+		if move_dir == Vector3.ZERO:
+			return
+		var target = characters[0]
+		target.position += move_dir * 0.1
+		target.look_at(target.position + move_dir, Vector3.UP)
 	)
