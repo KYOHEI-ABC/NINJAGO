@@ -13,8 +13,8 @@ var input_handlers: Array[InputHandler] = [InputHandler.new(), InputHandler.new(
 
 func _ready() -> void:
 	var camera = Camera3D.new()
-	camera.position = Vector3(0.0, 32.0, 32.0)
-	camera.rotation_degrees.x = -45
+	camera.position = Vector3(0.0, 8.0, 32.0)
+	camera.rotation_degrees.x = -15
 	camera.fov = 15.0
 	add_child(camera)
 
@@ -41,13 +41,15 @@ func _ready() -> void:
 	input_handlers[1].valid_area.position.x = Main.WINDOW.x / 2
 
 
-	characters.append(Character.new(0))
+	characters.append(Character.new(0, characters))
 	add_child(characters[0])
-	characters[0].position = Vector3(-8, 0, 0)
+	characters[0].position = Vector3(-3, 0, 0)
+	characters[0].rotation_degrees.y = 180
 
-	characters.append(Character.new(0))
+	characters.append(Character.new(0, characters))
 	add_child(characters[1])
-	characters[1].position = Vector3(8, 0, 0)
+	characters[1].position = Vector3(3, 0, 0)
+	characters[1].rotation_degrees.y = 180
 
 	for i in range(2):
 		input_handlers[i].drag.connect(func(drag: Vector2) -> void:
@@ -55,6 +57,12 @@ func _ready() -> void:
 			if move_dir == Vector3.ZERO:
 				return
 			var target = characters[i]
+			if target.attack_count >= 0:
+				return
 			target.position += move_dir * 0.1
 			target.look_at(target.position + move_dir, Vector3.UP)
+		)
+
+		input_handlers[i].pressed.connect(func(position: Vector2) -> void:
+			characters[i].attack()
 		)
