@@ -5,6 +5,9 @@ static var WINDOW: Vector2 = Vector2(ProjectSettings.get_setting("display/window
 
 const MODELS: Array[PackedScene] = [
 	preload("res://assets/steve/steve.gltf"),
+	preload("res://assets/valorie/valorie.gltf"),
+	preload("res://assets/zombie/zombie.gltf"),
+	preload("res://assets/skeleton/skeleton.gltf"),
 ]
 
 var characters: Array[Character] = []
@@ -43,13 +46,24 @@ func _ready() -> void:
 
 	characters.append(Character.new(0, characters))
 	add_child(characters[0])
-	characters[0].position = Vector3(-3, 0, 0)
+	characters[0].position = Vector3(-1, 0, 3)
 	characters[0].rotation_degrees.y = 180
 
-	characters.append(Character.new(0, characters))
+	characters.append(Character.new(1, characters))
 	add_child(characters[1])
-	characters[1].position = Vector3(3, 0, 0)
+	characters[1].position = Vector3(1, 0, 3)
 	characters[1].rotation_degrees.y = 180
+
+	characters.append(Character.new(2, characters))
+	add_child(characters[2])
+	characters[2].position = Vector3(-5, 0, -3)
+	characters[2].rotation_degrees.y = 180
+
+	characters.append(Character.new(3, characters))
+	add_child(characters[3])
+	characters[3].position = Vector3(5, 0, -3)
+	characters[3].rotation_degrees.y = 180
+
 
 	for i in range(2):
 		input_handlers[i].drag.connect(func(drag: Vector2) -> void:

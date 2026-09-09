@@ -1,6 +1,8 @@
 class_name Character
 extends Node3D
 
+var index: int = -1
+
 var arms: Array[Node3D] = []
 var legs: Array[Node3D] = []
 
@@ -10,10 +12,13 @@ var attack_count: int = -1
 
 var characters: Array[Character] = []
 
-var velocity: Vector3 = Vector3.ZERO
 
 func _init(index: int, characters: Array[Character]) -> void:
-	add_child(Main.MODELS[0].instantiate())
+	self.index = index
+	add_child(Main.MODELS[index].instantiate())
+
+	if index > 1:
+		return
 
 	arms = [get_child(0).get_node("Waist/Right Arm2"), get_child(0).get_node("Waist/Left Arm2")]
 	legs = [get_child(0).get_node("Right Leg2"), get_child(0).get_node("Left Leg2")]
@@ -22,27 +27,25 @@ func _init(index: int, characters: Array[Character]) -> void:
 
 
 func _process(delta: float) -> void:
+	if index > 1:
+		return
 	if attack_count >= 0:
 		arms[0].rotation_degrees.x = lerp(180, 0, float(attack_count) / 15.0)
 		arms[0].rotation_degrees.z = lerp(45, -45, float(attack_count) / 15.0)
 
 		if attack_count == 8:
 			for character in characters:
-				if character != self and character.position.distance_to(position) < 3:
-					# character.position += (character.position - position).normalized()
-					character.velocity += (character.position - position).normalized() * 0.05
-					character.velocity.y += 0.05
+				if character != self and character.position.distance_to(position) < 2:
+					character.position += (character.position - position).normalized()
+					character.look_at_from_position(character.position, position, Vector3.UP)
 
 
 	else:
 		idle()
 
 
-	if (prev_position - position).length_squared() > 0.0001:
+	if prev_position != position:
 		walk()
-		if randf() < 0.005:
-			if position.y == 0:
-				velocity.y += 0.5
 
 	prev_position = position
 
@@ -51,15 +54,6 @@ func _process(delta: float) -> void:
 		if attack_count > 15:
 			attack_count = -1
 
-	position += velocity
-	velocity = velocity * 0.9
-
-	if position.y > 0:
-		velocity.y -= 0.03
-	else:
-		position.y = 0
-		velocity.y = 0
-	print(position.y)
 
 func idle() -> void:
 	all_rotation_x(0)
@@ -78,6 +72,7 @@ func walk() -> void:
 
 func attack() -> void:
 	if attack_count == -1:
+		all_rotation_x(90)
 		attack_count = 0
 		arms[0].rotation_degrees.x = 180
 		arms[0].rotation_degrees.z = 45
