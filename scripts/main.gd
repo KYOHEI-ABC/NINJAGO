@@ -35,10 +35,9 @@ func _ready() -> void:
 
 
 	add_child(input_handlers[0])
-	input_handlers[0].valid_area.size.x = Main.WINDOW.x / 2
+	input_handlers[0].valid_area.end.x = Main.WINDOW.x / 2
 
 	add_child(input_handlers[1])
-	input_handlers[1].valid_area.size.x = Main.WINDOW.x / 2
 	input_handlers[1].valid_area.position.x = Main.WINDOW.x / 2
 
 
