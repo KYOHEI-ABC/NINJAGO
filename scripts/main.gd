@@ -9,7 +9,7 @@ const MODELS: Array[PackedScene] = [
 
 var characters: Array[Character] = []
 
-var input_handler: InputHandler = InputHandler.new()
+var input_handlers: Array[InputHandler] = [InputHandler.new(), InputHandler.new()]
 
 func _ready() -> void:
 	var camera = Camera3D.new()
@@ -34,16 +34,28 @@ func _ready() -> void:
 	mesh_instance.material_override.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 
 
-	add_child(input_handler)
+	add_child(input_handlers[0])
+	input_handlers[0].valid_area.size.x = Main.WINDOW.x / 2
+
+	add_child(input_handlers[1])
+	input_handlers[1].valid_area.size.x = Main.WINDOW.x / 2
+	input_handlers[1].valid_area.position.x = Main.WINDOW.x / 2
+
 
 	characters.append(Character.new(0))
 	add_child(characters[0])
+	characters[0].position = Vector3(-8, 0, 0)
 
-	input_handler.drag.connect(func(drag: Vector2) -> void:
-		var move_dir = Vector3(drag.x, 0, drag.y)
-		if move_dir == Vector3.ZERO:
-			return
-		var target = characters[0]
-		target.position += move_dir * 0.1
-		target.look_at(target.position + move_dir, Vector3.UP)
-	)
+	characters.append(Character.new(0))
+	add_child(characters[1])
+	characters[1].position = Vector3(8, 0, 0)
+
+	for i in range(2):
+		input_handlers[i].drag.connect(func(drag: Vector2) -> void:
+			var move_dir = Vector3(drag.x, 0, drag.y)
+			if move_dir == Vector3.ZERO:
+				return
+			var target = characters[i]
+			target.position += move_dir * 0.1
+			target.look_at(target.position + move_dir, Vector3.UP)
+		)
